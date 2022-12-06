@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>App réalisée avec Vue.js</title>
+
+    <style>
+      [v-cloak] {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="main" v-cloak>
+      <input
+        type="search"
+        v-model="searchString"
+        @change="getParking()"
+        placeholder="Enter your search terms"
+      />
+      <ul v-for="record in response.records">
+        <li>nom: {{ record.fields.nom_complet }}</li>
+        <li>
+          capacités de voitures: {{ record.fields.capacite_voiture }} voitures
+        </li>
+        <li>adresse: {{ record.fields.adresse }}</li>
+        <li>commune: {{ record.fields.commune }}</li>
+        <li>service vélo: {{ record.fields.service_velo }}</li>
+        <li>
+          stationnement de vélo sécurisés: {{
+          record.fields.stationnement_velo_securise }}
+        </li>
+        <li>code postal: {{ record.fields.code_postal }}</li>
+        <li>
+          <a
+            target="_blank"
+            ref="noopener noreferrer"
+            :href="urlGoogleMap(record.fields.location[0], record.fields.location[1])"
+            >Localisation</a
+          >
+        </li>
+      </ul>
+    </div>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            searchString: "",
+            response: [],
+          };
+        },
+
+        created: async function () {
+          await this.getParking();
+        },
+
+        methods: {
+          getParking: async function () {
+            return await axios
+              .get(
+                "https://data.nantesmetropole.fr/api/records/1.0/search/?dataset=244400404_aires-covoiturage-nantes-metropole&q=&rows=10"
+              )
+              .then((response) => {
+                this.response = response.data;
+              });
+          },
+          urlGoogleMap: function (lat, long) {
+            return `https://www.google.com/maps/search/?api=1&query=${lat},${long}`;
+          },
+          //   filteredParking: function () {
+          //     const parking_array = this.parking;
+          //     const searchString = this.searchString;
+
+          //     if (!searchString) {
+          //       return parking_array;
+          //     }
+
+          //     const search = searchString.trim().toLowerCase();
+          //     const length = search.length;
+
+          //     const articlesFiltered = parking_array.filter(function (article) {
+          //       if (article.title.toLowerCase().slice(0, length) === search) {
+          //         return parking;
+          //       }
+          //     });
+
+          //     return parkingFiltered;
+          //   },
+        },
+      }).mount("#main");
+    </script>
+  </body>
+</html>
