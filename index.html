@@ -4,69 +4,56 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="style.css" />
-    <title>Vue.js | API</title>
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <title>Appvuesimple</title>
 
-    <script defer type="text/javascript" src="main.js"></script>
+    <script defer type="text/javascript" src="./assets/js/main.js"></script>
+    <link rel="shortcut icon" type="image/jpg" href="./assets/img/favicon.ico"/>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/vue@3"></script>
   </head>
   <body>
-    <div id="main" v-cloak>
+    <div id="app" v-cloak>
       <div class="searchBar">
         <input
           type="search"
           v-model="searchString"
-          @change="getAiresConvoit()"
-          placeholder="Rechercher un parking..."
+          @change="searchUser()"
+          placeholder="Recherchez un nom / prénom / mail"
         />
       </div>
 
-      <!-- <ul v-for="p in data.records" @change="getParking()">
-        <li>{{p.fields.nom_complet}}</li>
-      </ul> -->
-
-      <div v-for="p in data.records" class="results">
-        <ul>
-          <li><strong>Nom:</strong> {{p.fields.nom_complet}}</li>
+      <div class="container">
+        <ul v-for="r in data.users" class="results">
           <li>
-            <strong>Présentation:</strong>
-            {{p.fields.presentation}}
+            <div
+              style="width:100%; display: flex; justify-content: center;">
+              <img :src="r.image" alt="r.lastName" style="width:200px;"></img>
+            </div>
           </li>
+          <li><strong>Nom: </strong>{{ r.lastName }}</li>
+          <li><strong>Prénom: </strong>{{ r.firstName }}</li>
           <li>
-            <strong>Capacités de voitures:</strong>
-            {{p.fields.capacite_voiture}} voitures
+            <strong>Date de naissance: </strong>{{ r.birthDate }} ({{ r.age }} ans)
           </li>
-          <li><strong>Adresse:</strong> {{p.fields.adresse}}</li>
-          <li><strong>Commune:</strong> {{p.fields.commune}}</li>
-          <li><strong>Service vélo:</strong> {{p.fields.service_velo}}</li>
+          <li><strong>Sexe: </strong>{{ r.gender }}</li>
+          <li style="overflow-wrap: break-word;"><strong>Mail: </strong>{{ r.email }}</li>
+          <li><strong>Tel: </strong>{{ r.phone }}</li>
+          <li><strong>Adresse: </strong>{{ r.address.address }}</li>
+          <li><strong>Code postal: </strong>{{ r.address.postalCode }}</li>
           <li>
-            <strong>Stationnement de vélo sécurisés:</strong>
-            {{p.fields.stationnement_velo_securise}}
+            <strong>Ville: </strong>{{ r.address.city }} ({{ r.address.state }})
           </li>
-          <li><strong>Code postal:</strong> {{p.fields.code_postal}}</li>
+          <li><strong>Localisation GPS: </strong>
+            <a
+              :href="urlGoogleMap(r.address.coordinates.lat, r.address.coordinates.lng)"
+              target="”_blank”"
+              rel="noreferrer noopener">
+              maps ↗
+            </a>
+          </li>
         </ul>
-
-        <div>
-          <iframe
-            id="mapFrame"
-            width="500"
-            height="300"
-            :src="urlGoogleMap(p.fields.location[0], p.fields.location[1])"
-            style="border: 2px solid black; border-radius: 5px"
-          ></iframe>
-        </div>
       </div>
     </div>
   </body>
 </html>
-
-<!-- TODO :
-
-- Faire une recherche par nom de parking, commune, adresse, capacité de voitures, code postal
-- Optimiser la recherche (faire un système de pagination
-  -> Commencer de 0 à 10, puis set la requete en partant de 10, puis 20, ...)
-  -> déjà recherché : "api charger que les 10 premier element puis charger les autres en différé"
-- Revoir le formatage de la présentation
-
--->

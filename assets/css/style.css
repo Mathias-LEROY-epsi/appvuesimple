@@ -1,0 +1,152 @@
+/* Custom properties */
+
+:root {
+  --color-primary: #1c54a2;
+  --color-primary-light: #2570d7;
+  --color-secondary: #aa1a1a;
+  --color-font: #4f5863;
+  --color-shadow: #888f98;
+  --color-border-li: #e8b9b9;
+  --color-background: #fcfcfc;
+  --color-background-light-blue: #e3eefd;
+
+  --font-weight: 700;
+  --border-radius: 10px;
+}
+
+/* Hide un-compiled mustache bindings until the Vue instance is ready */
+[v-cloak] {
+  display: none;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font: 13px/1.3 'Fira Code', sans-serif;
+  font-weight: var(--font-weight);
+  color: var(--color-font);
+  text-align: center;
+}
+
+body,
+.searchbar input {
+  background-color: var(--color-background);
+}
+
+.results,
+.results li {
+  background-color: var(--color-background-light-blue);
+}
+
+/* The search input */
+
+.searchBar {
+  background-color: var(--color-primary);
+  box-shadow: 0 1px 1px #ccc;
+  border-radius: var(--border-radius);
+  padding: 10px;
+  margin: 45px auto 25px;
+  position: relative;
+  text-align: right;
+  line-height: 1;
+}
+
+.searchBar input {
+  background: var(--color-background) no-repeat 13px 13px;
+
+  border: none;
+  width: 100%;
+  line-height: 19px;
+  padding-block: 10px;
+  padding-inline: 10px;
+
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 8px var(--color-shadow) inset;
+  text-align: left;
+  font-size: 14px;
+  font-family: inherit;
+  font-weight: bold;
+  outline: none;
+  text-indent: 40px;
+  caret-color: var(--color-primary);
+}
+
+.container {
+  display: grid;
+  grid-gap: 40px;
+  justify-content: center;
+  margin-block: 40px;
+}
+
+.results {
+  list-style: none;
+  text-align: left;
+  border: var(--color-primary) 5px solid;
+  border-radius: var(--border-radius);
+}
+
+.results li {
+  border-bottom: 1px solid var(--color-border-li);
+  padding: 8px;
+  letter-spacing: 2px;
+}
+
+.results li a {
+  color: var(--color-primary-light);
+}
+
+.results li:last-child {
+  border-bottom: none;
+  padding: 8px;
+}
+
+.results li strong {
+  color: var(--color-secondary);
+}
+
+/* RESPONSIVE */
+
+@media (min-width: 1200px) {
+  .searchBar {
+    width: clamp(580px, 60vw, 600px);
+  }
+
+  .container {
+    grid-template-columns: repeat(3, 350px);
+  }
+
+  .results {
+    width: clamp(300px, 22vw, 500px);
+  }
+}
+
+@media (min-width: 800px) and (max-width: 1199px) {
+  .searchBar {
+    width: clamp(400px, 60vw, 580px);
+  }
+
+  .container {
+    grid-template-columns: repeat(2, 350px);
+  }
+
+  .results {
+    width: clamp(300px, 30vw, 500px);
+  }
+}
+
+@media (max-width: 799px) {
+  .searchBar {
+    width: 90vw;
+  }
+
+  .container {
+    grid-template-columns: 350px;
+  }
+
+  .results {
+    width: clamp(300px, 30vw, 350px);
+  }
+}
