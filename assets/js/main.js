@@ -10,10 +10,6 @@ const app = Vue.createApp({
     await this.getUsers()
   },
 
-  computed: async function () {
-    await this.searchUser()
-  },
-
   methods: {
     getUsers: async function () {
       return await axios
